@@ -20,6 +20,16 @@
   color: #888;
 }
 
+.remove-card {
+  top: 5px;
+  right: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px; /* Ajuste conforme necessário */
+  color: rgb(255, 255, 255); /* Cor do "x" */
+}
+
 @media (max-width: 768px) {
   .card {
     width: 100px;

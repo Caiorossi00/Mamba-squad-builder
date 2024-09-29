@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "./Card";
 import InputCode from "./InputCode";
 import jogadores from "../data/jogadores";
 import "./CardGame.css";
 
 const CardGame = () => {
-  const [cards, setCards] = useState([null, null, null, null, null]);
+  const [cards, setCards] = useState(() => {
+    const storedCards = localStorage.getItem("cards");
+    return storedCards
+      ? JSON.parse(storedCards)
+      : [null, null, null, null, null];
+  });
   const [codigo, setCodigo] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("cards", JSON.stringify(cards));
+  }, [cards]);
 
   const handleAddCard = () => {
     const codigoLower = codigo.toLowerCase();
@@ -30,6 +39,12 @@ const CardGame = () => {
     }
   };
 
+  const handleRemoveCard = (index) => {
+    const novoArray = [...cards];
+    novoArray[index] = null;
+    setCards(novoArray);
+  };
+
   const totalNivelDePoder = cards.reduce((total, card) => {
     return card ? total + card.nivelDePoder : total;
   }, 0);
@@ -43,7 +58,11 @@ const CardGame = () => {
       <h1>Squad Builder</h1>
       <div className="card-container">
         {cards.map((card, index) => (
-          <Card key={index} jogador={card} />
+          <Card
+            key={index}
+            jogador={card}
+            onRemove={() => handleRemoveCard(index)}
+          />
         ))}
       </div>
       <InputCode
@@ -51,10 +70,7 @@ const CardGame = () => {
         setCodigo={setCodigo}
         handleAddCard={handleAddCard}
       />
-      <h3 className="total-points">
-        Mamba points: <br></br>
-        {totalNivelDePoder}
-      </h3>
+      <h3 className="total-points">Mamba points: {totalNivelDePoder}</h3>
     </div>
   );
 };

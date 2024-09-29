@@ -1,14 +1,21 @@
 import "./Card.css";
 
-const Card = ({ jogador }) => {
+const Card = ({ jogador, onRemove }) => {
   return (
     <div className="card">
       {jogador ? (
         <>
-          <img src={jogador.imagem} alt={jogador.nome} />
+          <button className="remove-card" onClick={onRemove}>
+            ✖
+          </button>
+          <img
+            src={jogador.imagem}
+            alt={jogador.nome}
+            style={{ width: "100%", height: "80%", objectFit: "cover" }}
+          />
         </>
       ) : (
-        <span>???</span>
+        <span>Card Vazio</span>
       )}
     </div>
   );
